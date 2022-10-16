@@ -1,0 +1,37 @@
+def ab_one(n_customers):
+    n = int(n_customers)
+    b = set()
+    a = (i for i in range(n+1))
+    c = []
+    d = {}
+
+    for x in a:
+        c.append([int(i) for i in str(x)])
+        b.add(sum([int(i) for i in str(x)]))
+
+    for i in b:
+        d[i]=len([x for x in c if sum(x) == i])
+
+    return d
+
+print(ab_one('99'))
+
+def ab_two(n_customers, n_first_id):
+    n = int(n_customers)
+    id = int(n_first_id)
+    b = set()
+    a = (i for i in range(id, n + 1))
+    c = []
+
+    d = {}
+    for x in a:
+        c.append([int(i) for i in str(x)])
+        b.add(sum([int(i) for i in str(x)]))
+
+    for i in b:
+        d[i] = len([x for x in c if sum(x) == i])
+
+    return d
+
+
+print(ab_two('777', '254'))
