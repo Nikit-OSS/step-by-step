@@ -1,0 +1,24 @@
+a = r'C:\Users\Михаил\Documents\текст.txt'
+b = r'C:\Users\Михаил\Documents\Проверка-текста-new.ocr.txt'
+
+with open(a, 'r', encoding='utf-8') as f:
+    lines1 = f.readlines()
+with open(b, 'r', encoding='utf-8') as f:
+    lines2 = f.readlines()
+
+res = []
+d = 0
+len_lines1 = len(lines1)
+len_lines2 = len(lines2)
+
+for i in range(len_lines1):
+    if lines1[i] != lines2[i]:
+        print(i)
+        lines1_4 = str(lines1[i]).split()
+        lines2_4 = str(lines2[i]).split()
+        len_lines1_4 = len(str(lines1[i]).split())
+        len_lines2_4 = len(str(lines2[i]).split())
+        for j in range(len_lines1_4):
+            if lines1_4[j] != lines2_4[j]:
+                print(lines1_4[j - 1], lines1_4[j], lines1_4[j + 1])
+                print(lines2_4[j - 1], lines2_4[j], lines2_4[j + 1])
