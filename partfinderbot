@@ -1,0 +1,55 @@
+import telebot
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+def part_num(a):
+    try:
+        link = "https://www.dadetal.ru/"
+        browser = webdriver.Chrome()
+        browser.get(link)
+
+        b_log = browser.find_element(By.XPATH, "// *[ @ id = 'page'] / div[2] / div / div / div / div / div / ul / li[1] / button")
+        b_log.click()
+
+        time.sleep(1)
+        log = browser.find_element(By.XPATH, '//*[@placeholder="Логин"]')
+        log.send_keys('')
+        pas = browser.find_element(By.XPATH, '//*[@placeholder="Пароль"]')
+        pas.send_keys('')
+        en_log = browser.find_element(By.XPATH, '//*[@class="auth-form__button-wrapper"]/*[@type="submit"]')
+        en_log.click()
+
+        time.sleep(3)
+
+        inp1 = browser.find_element(By.XPATH, '// *[ @ id = "search_input"] / input')
+        inp1.send_keys(a)
+        srh = browser.find_element(By.XPATH, '//*[@title="найти"]')
+        srh.click()
+
+        time.sleep(35)
+
+        brand_name = browser.find_element(By.XPATH, '//*[@class="search__spare"]//span[1]')
+        part_name = browser.find_element(By.XPATH, '//*[@class="search__spare"]//span[2]')
+        price = browser.find_element(By.XPATH, '//*[@class="search__spare"]/div/div[2]/div[1]/div[5]/div/div[@title]')
+        return (brand_name.text + ' '+ part_name.text +' '+ price.text)
+    finally:
+        browser.quit()
+    #return brand_name.text, part_name.text, price.text
+
+token = ''
+bot = telebot.TeleBot(token)
+@bot.message_handler(commands=["start"])
+def start(message, res=False):
+    bot.send_message(message.chat.id, 'Я на связи. Напиши мне номер детали')
+
+    bot.register_next_step_handler(message, wait_message)
+@bot.message_handler(content_types=["text"])
+def wait_message(message):
+    global part
+    part = message.text
+    bot.send_message(message.chat.id,"Подожди минуту я посмотрю")
+    bot.send_message(message.chat.id, part_num(part))
+#def answer_message(message):
+
+bot.polling(none_stop=True, interval=0)
